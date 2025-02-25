@@ -86,9 +86,10 @@ def get_device(operators, devices=None):
 
 def orthogonal_complement(proj):
     """ Computes the orthogonal complement to a given matrix proj"""
-    _, S, Vh = torch.linalg.svd(proj, full_matrices=True)
+    _, S, Vh = torch.linalg.svd(proj.double(), full_matrices=True)
     rank = (S > 1e-5).sum()
-    return Vh[rank:].conj().t()
+    return Vh[rank:].to(proj.dtype).conj().t()
+
 
 
 def krylov_constraint_solve(C, tol=1e-5):
